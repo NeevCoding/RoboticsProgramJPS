@@ -25,6 +25,27 @@ public class RobotContainer {
             drive.stopMotor();
         }
     }
+        public static class El extends SubsystemBase { // Added
+        private final CANSparkMax motor1 = new CANSparkMax(5, MotorType.kBrushless); // Added
+        private final CANSparkMax motor2 = new CANSparkMax(6, MotorType.kBrushless); // Added
+
+        public El() {
+            motor2.follow(motor1);
+        }
+
+        public void raise(double speed) {
+            motor1.set(speed);
+        }
+
+        public void lower(double speed) {
+            motor1.set(-speed);
+        }
+
+        public void stop() {
+            motor1.set(0);
+        }
+    }
+    private final El elevatorSubsystem = new El();
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
     private final Joystick joystick = new Joystick(0);
     public RobotContainer() {
@@ -38,8 +59,9 @@ public class RobotContainer {
     public DriveSubsystem getDriveSubsystem() {
         return driveSubsystem
     }
-    public AutonomousCommand getAutonomousCommand() {
-        return new AutonomousCommand(driveSubsystem);
+    
+    public El getEl() {
+        return elevatorSubsystem;
     }
 //Autonomous command
     public static class AutonomousCommand extends CommandBase {
